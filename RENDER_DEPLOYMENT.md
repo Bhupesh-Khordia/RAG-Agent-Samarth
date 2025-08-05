@@ -6,7 +6,7 @@ This guide will help you deploy the RAG Agent Server to Render.com successfully.
 
 1. **Ensure all dependencies are in package.json**
    - ✅ All required packages are listed
-   - ✅ TypeScript types are included in devDependencies
+   - ✅ TypeScript types are included in dependencies (not devDependencies)
    - ✅ Build script is configured
 
 2. **Verify TypeScript configuration**
@@ -59,7 +59,7 @@ NODE_ENV=production
 ### Common Issues
 
 1. **Build Failures**
-   - ✅ All TypeScript types are installed
+   - ✅ All TypeScript types are installed in dependencies
    - ✅ tsconfig.json is properly configured
    - ✅ Dependencies are correctly listed
 
@@ -69,21 +69,25 @@ NODE_ENV=production
    - ✅ Port is correctly configured
 
 3. **TypeScript Errors**
-   - ✅ @types/node is installed
-   - ✅ @types/express is installed
-   - ✅ @types/cors is installed
-   - ✅ @types/uuid is installed
+   - ✅ @types/node is in dependencies (not devDependencies)
+   - ✅ @types/express is in dependencies
+   - ✅ @types/cors is in dependencies
+   - ✅ @types/uuid is in dependencies
 
 ### Build Log Analysis
 
 If you see errors like:
 ```
+Cannot find type definition file for 'node'
 Could not find a declaration file for module 'express'
 Cannot find name 'process'
 Cannot find name 'console'
 ```
 
-**Solution**: The tsconfig.json has been updated to handle these issues.
+**Solution**: 
+- ✅ TypeScript types moved to dependencies
+- ✅ tsconfig.json updated to handle types automatically
+- ✅ typeRoots configured properly
 
 ## 📊 Monitoring
 

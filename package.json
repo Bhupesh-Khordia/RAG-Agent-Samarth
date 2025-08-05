@@ -20,13 +20,13 @@
     "axios": "^1.6.0",
     "uuid": "^9.0.1",
     "marked": "^9.1.6",
-    "ml-distance": "^2.0.0"
-  },
-  "devDependencies": {
+    "ml-distance": "^2.0.0",
+    "@types/node": "^20.8.0",
     "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17",
-    "@types/node": "^20.8.0",
-    "@types/uuid": "^9.0.7",
+    "@types/uuid": "^9.0.7"
+  },
+  "devDependencies": {
     "@types/marked": "^5.0.2",
     "typescript": "^5.2.2",
     "ts-node-dev": "^2.0.0",
