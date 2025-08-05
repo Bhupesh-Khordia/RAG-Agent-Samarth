@@ -34,8 +34,9 @@ export class AgentService {
       };
       this.sessionManager.addMessage(session_id, userMessage);
 
-      // Get recent conversation history
-      const recentMessages = this.sessionManager.getRecentMessages(session_id, 2);
+      // Get conversation history (limit to last 10 messages to prevent context overflow)
+      const allMessages = this.sessionManager.getAllMessages(session_id);
+      const conversationHistory = allMessages.slice(-10); // Keep last 10 messages
 
       // Search for relevant context
       const searchResults = await this.vectorStore.search(message, 3);
@@ -57,10 +58,10 @@ export class AgentService {
       // Generate system prompt
       const systemPrompt = this.generateSystemPrompt();
 
-      // Generate response
+      // Generate response using conversation history
       const response = await this.llmService.generateResponse(
         systemPrompt,
-        recentMessages,
+        conversationHistory,
         context,
         pluginResults
       );
@@ -94,13 +95,14 @@ export class AgentService {
 
 1. **Knowledge Base Access**: You can search through stored documents and use relevant information to answer questions.
 2. **Plugin Execution**: You can use plugins for specific tasks like weather information and mathematical calculations.
-3. **Conversation Memory**: You remember the context of ongoing conversations.
+3. **Conversation Memory**: You remember the context of ongoing conversations and can refer to previous messages.
 
 **Instructions:**
 - Always be helpful, accurate, and concise in your responses
 - When using information from the knowledge base, cite the source
 - When using plugins, clearly indicate what information you're providing
-- Maintain conversation context and refer to previous messages when relevant
+- **IMPORTANT**: Maintain conversation context and refer to previous messages when relevant
+- If the user asks follow-up questions or refers to previous messages, acknowledge and respond accordingly
 - If you don't know something, say so rather than making up information
 
 **Available Plugins:**
@@ -111,6 +113,7 @@ export class AgentService {
 - Provide clear, well-structured responses
 - If using plugins, explain what you found
 - If using knowledge base content, mention the source
-- Keep responses conversational and natural`;
+- Keep responses conversational and natural
+- When appropriate, reference previous parts of the conversation`;
   }
 } 

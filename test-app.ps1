@@ -23,12 +23,38 @@ try {
 
     $response = Invoke-RestMethod -Uri "http://localhost:3000/agent/message" -Method POST -ContentType "application/json" -Body $body
     Write-Host "✅ RAG Test Response:" -ForegroundColor Green
-    Write-Host $response.response -ForegroundColor Cyan
+    Write-Host $response.reply -ForegroundColor Cyan
 } catch {
     Write-Host "❌ RAG Test Failed: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 2: Weather Plugin
+# Test 2: Conversation Memory
+Write-Host "`n🧠 Testing Conversation Memory..." -ForegroundColor Yellow
+try {
+    # First message
+    $body1 = @{
+        message = "My name is John"
+        session_id = "memory-test-456"
+    } | ConvertTo-Json
+
+    $response1 = Invoke-RestMethod -Uri "http://localhost:3000/agent/message" -Method POST -ContentType "application/json" -Body $body1
+    Write-Host "✅ First message response:" -ForegroundColor Green
+    Write-Host $response1.reply -ForegroundColor Cyan
+
+    # Second message (should remember the name)
+    $body2 = @{
+        message = "What is my name?"
+        session_id = "memory-test-456"
+    } | ConvertTo-Json
+
+    $response2 = Invoke-RestMethod -Uri "http://localhost:3000/agent/message" -Method POST -ContentType "application/json" -Body $body2
+    Write-Host "✅ Second message response (should remember name):" -ForegroundColor Green
+    Write-Host $response2.reply -ForegroundColor Cyan
+} catch {
+    Write-Host "❌ Memory Test Failed: $($_.Exception.Message)" -ForegroundColor Red
+}
+
+# Test 3: Weather Plugin
 Write-Host "`n🌤️ Testing Weather Plugin..." -ForegroundColor Yellow
 try {
     $body = @{
@@ -38,12 +64,12 @@ try {
 
     $response = Invoke-RestMethod -Uri "http://localhost:3000/agent/message" -Method POST -ContentType "application/json" -Body $body
     Write-Host "✅ Weather Test Response:" -ForegroundColor Green
-    Write-Host $response.response -ForegroundColor Cyan
+    Write-Host $response.reply -ForegroundColor Cyan
 } catch {
     Write-Host "❌ Weather Test Failed: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 3: Math Plugin
+# Test 4: Math Plugin
 Write-Host "`n🧮 Testing Math Plugin..." -ForegroundColor Yellow
 try {
     $body = @{
@@ -53,12 +79,12 @@ try {
 
     $response = Invoke-RestMethod -Uri "http://localhost:3000/agent/message" -Method POST -ContentType "application/json" -Body $body
     Write-Host "✅ Math Test Response:" -ForegroundColor Green
-    Write-Host $response.response -ForegroundColor Cyan
+    Write-Host $response.reply -ForegroundColor Cyan
 } catch {
     Write-Host "❌ Math Test Failed: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# Test 4: System Stats
+# Test 5: System Stats
 Write-Host "`n📊 Checking System Stats..." -ForegroundColor Yellow
 try {
     $stats = Invoke-RestMethod -Uri "http://localhost:3000/stats" -Method GET

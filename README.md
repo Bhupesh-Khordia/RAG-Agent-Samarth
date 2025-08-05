@@ -336,8 +336,41 @@ The system automatically processes markdown files from the `sample-md-files/` di
 ## 🧠 Memory System
 
 - **Session-based**: Each conversation maintains its own context
-- **Recent History**: Last 2 messages are included in context
+- **Conversation History**: Last 10 messages are included in context (prevents memory overflow)
 - **Persistent**: Sessions persist until server restart
+- **Context Awareness**: Agent remembers previous messages and can refer to them
+- **Automatic Cleanup**: Old messages are automatically managed to prevent memory bloat
+
+### Memory Features
+
+1. **Session Persistence**: Each `session_id` maintains its own conversation history
+2. **Context Retention**: Agent remembers names, preferences, and previous topics
+3. **Follow-up Support**: Can handle follow-up questions and references to previous messages
+4. **Memory Limits**: Automatically limits to last 10 messages to prevent context overflow
+
+### Example Conversation Flow
+
+```
+User: "My name is John"
+Agent: "Nice to meet you, John! How can I help you today?"
+
+User: "What's my name?"
+Agent: "Your name is John, as you mentioned earlier in our conversation."
+```
+
+### Testing Memory
+
+You can test the conversation memory using the included test script:
+
+```powershell
+# Run the memory test
+.\test-app.ps1
+```
+
+This will test:
+- ✅ Session creation and persistence
+- ✅ Message history retention
+- ✅ Context awareness and follow-up questions
 
 ## 🔧 Configuration
 
